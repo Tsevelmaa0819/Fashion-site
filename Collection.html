@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COLLECTION | TSEKV</title>
+    <link rel="stylesheet" href="app.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Noto+Sans+JP:wght@300;500&family=Zen+Old+Mincho:wght@400;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <header class="header dark">
+        <div class="logo"><a href="index.html">TSEKV</a></div>
+        <nav class="nav">
+            <a href="about.html" id="nav-about">ABOUT</a>
+            <a href="Collection.html" id="nav-collection">COLLECTION</a>
+            <a href="contact.html" id="nav-contact">CONTACT</a>
+        </nav>
+        <div class="header-right">
+            <div class="lang-switcher">
+                <button onclick="setLanguage('jp')" class="lang-btn">JP</button>
+                <button onclick="setLanguage('mn')" class="lang-btn">MN</button>
+            </div>
+            <a href="finesse.html" class="btn-circle" id="finesse-btn">Finesse<br>Stylist</a>
+        </div>
+    </header>
+
+    <div class="collection-wrapper">
+
+        <aside class="sidebar">
+            <ul class="filter-list">
+                <li class="filter-header" id="filter-new" onclick="filterGrid('new')">NEW IN</li>
+                <li class="active" id="filter-all" onclick="filterGrid('all')">VIEW ALL</li>
+                <li id="filter-fav" onclick="filterGrid('fav')">FAVORITES</li>
+                <li id="filter-arrival" onclick="filterGrid('new')">NEW ARRIVALS</li>
+
+                <li class="filter-header" id="cat-header">CATEGORIES</li>
+                <li id="cat-coat" onclick="filterGrid('coat')">COATS | TRENCH</li>
+                <li id="cat-jacket" onclick="filterGrid('jacket')">JACKETS</li>
+                <li id="cat-dress" onclick="filterGrid('dress')">DRESSES</li>
+                <li id="cat-knit" onclick="filterGrid('knit')">KNITWEAR</li>
+                <li id="cat-shirt" onclick="filterGrid('shirt')">SHIRTS</li>
+                <li id="cat-trouser" onclick="filterGrid('trouser')">TROUSERS</li>
+                <li id="cat-jeans" onclick="filterGrid('jeans')">JEANS</li>
+                <li id="cat-skirt" onclick="filterGrid('skirt')">SKIRTS</li>
+                <li id="cat-shoes" onclick="filterGrid('shoes')">SHOES</li>
+            </ul>
+        </aside>
+
+        <main class="product-masonry" id="product-grid">
+            <!-- Items injected by JS -->
+        </main>
+    </div>
+
+    <footer class="simple-footer">
+        <p>&copy; 2026 TSEKV Collection.</p>
+    </footer>
+
+    <script src="translations.js"></script>
+    <script>
+        // --- Product Data (Localized) ---
+        // Names in JP (default) and MN. Prices realistic.
+        const products = [
+            // COATS
+            { id: 1, cat: 'coat', name: 'ノマドウールコート', name_mn: 'Нүүдэлчин Ноосон Пальто', price: '¥85,000', img: 'https://images.unsplash.com/photo-1539533018447-63fcce2678e3?auto=format&fit=crop&w=800&q=80', new: true },
+            { id: 2, cat: 'coat', name: 'クラシックトレンチ', name_mn: 'Сонгодог Тренч', price: '¥65,000', img: 'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=800&q=80' },
+            { id: 3, cat: 'coat', name: 'シープスキンコート', name_mn: 'Нэхий Пальто', price: '¥120,000', img: 'https://images.unsplash.com/photo-1544923246-77307dd654cb?auto=format&fit=crop&w=800&q=80' },
+            { id: 4, cat: 'coat', name: 'カシミアラップ', name_mn: 'Ноолууран Цув', price: '¥240,000', img: 'https://images.unsplash.com/photo-1515955656352-a1fa3ffcd111?auto=format&fit=crop&w=800&q=80' },
+
+            // JACKETS - Updated IDs
+            { id: 5, cat: 'jacket', name: 'ライダースジャケット', name_mn: 'Арьсан Хүрэм', price: '¥55,000', img: 'https://images.unsplash.com/photo-1520975661595-dc998daf0e8e?auto=format&fit=crop&w=800&q=80' },
+            { id: 6, cat: 'jacket', name: 'ウールブレザー', name_mn: 'Ноосон Пиджак', price: '¥45,000', img: 'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=800&q=80' },
+            { id: 7, cat: 'jacket', name: 'デニムジャケット', name_mn: 'Жинсэн Хүрэм', price: '¥28,000', img: 'https://images.unsplash.com/photo-1576995853123-5a10305d93c0?auto=format&fit=crop&w=800&q=80' },
+
+            // DRESSES
+            { id: 8, cat: 'dress', name: 'シルクドレス', name_mn: 'Торгон Даашинз', price: '¥38,000', img: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=800&q=80', tall: true },
+            { id: 9, cat: 'dress', name: 'リネンワンピース', name_mn: 'Даавуун Даашинз', price: '¥24,000', img: 'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?auto=format&fit=crop&w=800&q=80' },
+            { id: 10, cat: 'dress', name: 'ブラックドレス', name_mn: 'Хар Даашинз', price: '¥42,000', img: 'https://images.unsplash.com/photo-1539008835657-9e8e9680c56?auto=format&fit=crop&w=800&q=80', tall: true },
+            { id: 11, cat: 'dress', name: 'スリップドレス', name_mn: 'Слип Даашинз', price: '¥32,000', img: 'https://images.unsplash.com/photo-1612336307429-8a898d10e223?auto=format&fit=crop&w=800&q=80' },
+
+            // KNITWEAR
+            { id: 12, cat: 'knit', name: 'カシミアニット', name_mn: 'Ноолууран Цамц', price: '¥35,000', img: 'https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=800&q=80' },
+            { id: 13, cat: 'knit', name: 'タートルネック', name_mn: 'Ороолттой Цамц', price: '¥22,000', img: 'https://images.unsplash.com/photo-1620799140408-ed5341cd2431?auto=format&fit=crop&w=800&q=80' },
+            { id: 14, cat: 'knit', name: 'ベージュカーディガン', name_mn: 'Ноосон Цамц', price: '¥18,000', img: 'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?auto=format&fit=crop&w=800&q=80' },
+
+            // SHIRTS
+            { id: 15, cat: 'shirt', name: 'シルクブラウス', name_mn: 'Торгон Цамц', price: '¥22,000', img: 'https://images.unsplash.com/photo-1551163943-3f6a29e3965e?auto=format&fit=crop&w=800&q=80' },
+            { id: 16, cat: 'shirt', name: 'ホワイトシャツ', name_mn: 'Цагаан Цамц', price: '¥15,000', img: 'https://images.unsplash.com/photo-1598532163257-52648757041b?auto=format&fit=crop&w=800&q=80' },
+            { id: 17, cat: 'shirt', name: 'オーバーシャツ', name_mn: 'Том Цамц', price: '¥19,000', img: 'https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=800&q=80' },
+
+            // TROUSERS
+            { id: 18, cat: 'trouser', name: 'ワイドパンツ', name_mn: 'Өргөн Өмд', price: '¥26,000', img: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=800&q=80' },
+            { id: 19, cat: 'trouser', name: 'リラックスパンツ', name_mn: 'Чөлөөт Өмд', price: '¥22,000', img: 'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=800&q=80', tall: true },
+
+            // JEANS
+            { id: 20, cat: 'jeans', name: 'ヴィンテージデニム', name_mn: 'Винтаж Жинс', price: '¥18,000', img: 'https://images.unsplash.com/photo-1582552938357-32b906df40cb?auto=format&fit=crop&w=800&q=80' },
+            { id: 21, cat: 'jeans', name: 'ストレートジーンズ', name_mn: 'Шулуун Жинс', price: '¥16,000', img: 'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=800&q=80' },
+            { id: 22, cat: 'jeans', name: 'ブラックデニム', name_mn: 'Хар Жинс', price: '¥18,000', img: 'https://images.unsplash.com/photo-1584370848010-d7cc637703ef?auto=format&fit=crop&w=800&q=80' },
+
+            // SKIRTS
+            { id: 23, cat: 'skirt', name: 'ロングスカート', name_mn: 'Урт Юбка', price: '¥18,000', img: 'https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?auto=format&fit=crop&w=800&q=80', tall: true },
+            { id: 24, cat: 'skirt', name: 'プリーツスカート', name_mn: 'Хуниастай Юбка', price: '¥22,000', img: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80' },
+
+            // SHOES
+            { id: 25, cat: 'shoes', name: 'レザーブーツ', name_mn: 'Арьсан Гутал', price: '¥38,000', img: 'https://images.unsplash.com/photo-1550614000-4b9519e00302?auto=format&fit=crop&w=800&q=80' },
+            { id: 26, cat: 'shoes', name: 'パンプス', name_mn: 'Өсгийт', price: '¥24,000', img: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=800&q=80' },
+            { id: 27, cat: 'shoes', name: 'ローファー', name_mn: 'Лофер', price: '¥48,000', img: 'https://images.unsplash.com/photo-1516478177764-9fe5bd7e9717?auto=format&fit=crop&w=800&q=80' }
+        ];
+
+        let currentFilter = 'all';
+
+        function filterGrid(filter) {
+            currentFilter = filter;
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = '';
+
+            const lang = localStorage.getItem('tsekv_lang') || 'jp';
+
+            let items = products;
+            if (filter !== 'all') {
+                if (filter === 'new') items = products.filter(p => p.new);
+                else if (filter === 'fav') items = products.filter(p => p.id % 2 === 0);
+                else items = products.filter(p => p.cat === filter);
+            }
+
+            document.querySelectorAll('.filter-list li').forEach(li => li.classList.remove('active'));
+            const map = {
+                'all': 'filter-all', 'new': 'filter-new', 'fav': 'filter-fav',
+                'coat': 'cat-coat', 'jacket': 'cat-jacket', 'dress': 'cat-dress', 'knit': 'cat-knit',
+                'shirt': 'cat-shirt', 'trouser': 'cat-trouser', 'jeans': 'cat-jeans', 'skirt': 'cat-skirt', 'shoes': 'cat-shoes'
+            };
+            if (map[filter]) {
+                const activeEl = document.getElementById(map[filter]);
+                if (activeEl) activeEl.classList.add('active');
+            }
+
+            let delay = 0;
+
+            items.forEach(p => {
+                const el = document.createElement('div');
+                el.className = `product-item ${p.tall ? 'tall' : ''} fade-in-up`;
+                el.style.animationDelay = `${delay * 0.1}s`;
+
+                const tagHtml = p.new ? '<span class="tag">NEW</span>' : '';
+                const displayName = lang === 'mn' ? p.name_mn : p.name;
+
+                el.innerHTML = `
+                    <div class="product-image">
+                        <img src="${p.img}" alt="${displayName}" loading="lazy" 
+                             onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&w=800&q=80';">
+                        ${tagHtml}
+                    </div>
+                    <div class="product-info">
+                        <span class="p-name">${displayName}</span>
+                        <span class="p-price">${p.price}</span>
+                    </div>
+                `;
+                grid.appendChild(el);
+                delay++;
+            });
+        }
+
+        // Listen for language changes via custom event dispatch from translations.js
+        window.addEventListener('languageChanged', (e) => {
+            filterGrid(currentFilter); // Re-render current view with new language
+        });
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            filterGrid('all');
+        });
+
+    </script>
+</body>
+
+</html>

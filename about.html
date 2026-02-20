@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHILOSOPHY | TSEKV</title>
+    <link rel="stylesheet" href="app.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Noto+Sans+JP:wght@300;500&family=Zen+Old+Mincho:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* About Specifics */
+        .about-section {
+            padding: 140px 20px 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .about-container {
+            display: flex;
+            gap: 60px;
+            max-width: 1000px;
+            width: 100%;
+            align-items: center;
+        }
+
+        .about-text {
+            flex: 1;
+        }
+
+        .about-image {
+            flex: 1;
+            text-align: center;
+        }
+
+        .about-image img {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 4px;
+            box-shadow: 20px 20px 0px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-title {
+            font-family: 'Zen Old Mincho', serif;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--accent-color);
+        }
+
+        .about-desc {
+            font-size: 1rem;
+            line-height: 2;
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        .highlight-text {
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .about-container {
+                flex-direction: column-reverse;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header dark">
+        <div class="logo"><a href="index.html">TSEKV</a></div>
+        <nav class="nav">
+            <a href="about.html" id="nav-about">ABOUT</a>
+            <a href="Collection.html" id="nav-collection">COLLECTION</a>
+            <a href="contact.html" id="nav-contact">CONTACT</a>
+        </nav>
+        <div class="header-right">
+            <div class="lang-switcher">
+                <button onclick="setLanguage('jp')" class="lang-btn">JP</button>
+                <button onclick="setLanguage('mn')" class="lang-btn">MN</button>
+            </div>
+            <a href="finesse.html" class="btn-circle" id="finesse-btn">Finesse<br>Stylist</a>
+        </div>
+    </header>
+
+    <section class="about-section">
+        <div class="about-container">
+            <div class="about-text">
+                <h1 class="about-title" id="about-title">FROM MONGOLIA TO THE WORLD</h1>
+
+                <p class="about-desc" id="about-p1">
+                    私の旅はモンゴルの広大な風景から始まり、日本の活気ある街角で目的地を見つけました。
+                    私は有名なアカデミー出身のデザイナーでもなければ、伝統的なルールに従うわけでもありません。
+                </p>
+
+                <p class="about-desc" id="about-p2">
+                    私が持っているのは<span class="highlight-text">「アマチュア」だけど「本物」</span>の視点です。
+                    故郷の遺産と、今いる場所の革新を融合させています。
+                    ファッションが忘れられないものであるために、複雑である必要はないと信じています。
+                </p>
+
+                <p class="about-desc" id="about-p3">
+                    Tsekvは、私のように実験を恐れず、許可を求めることなく注目を集めるスタイルこそが真実だと知っている人々のためのブランドです。
+                </p>
+            </div>
+
+            <div class="about-image">
+                <img src="https://images.unsplash.com/photo-1534068590799-09895a701e3e?w=800&q=80" alt="Founder">
+            </div>
+        </div>
+    </section>
+
+    <footer class="simple-footer">
+        <p>&copy; 2026 TSEKV. All Rights Reserved.</p>
+    </footer>
+
+    <script src="translations.js"></script>
+</body>
+
+</html>

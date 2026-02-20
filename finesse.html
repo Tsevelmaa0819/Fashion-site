@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FINESSE | TSEKV</title>
+    <link rel="stylesheet" href="app.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Noto+Sans+JP:wght@300;500&family=Zen+Old+Mincho:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* Finesse Specifics */
+        .weather-section {
+            padding: 140px 20px 40px;
+            text-align: center;
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .weather-widget {
+            background: #fff;
+            max-width: 600px;
+            width: 90%;
+            margin: 0 auto 50px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border-radius: 4px;
+        }
+
+        .weather-header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .temp-display {
+            font-size: 3.5rem;
+            font-family: 'Zen Old Mincho', serif;
+            color: var(--accent-color);
+        }
+
+        .weather-icon {
+            font-size: 3rem;
+            color: #333;
+        }
+
+        .location-badge {
+            background: #111;
+            color: #fff;
+            padding: 5px 15px;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .recommendation-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .collection-badge {
+            display: block;
+            margin-bottom: 30px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .mascot-area {
+            margin-top: 20px;
+        }
+
+        .chibi-img {
+            width: 100px;
+            display: none;
+            margin: 0 auto;
+        }
+
+        .speech-bubble {
+            font-style: italic;
+            color: #555;
+            font-size: 0.95rem;
+            margin-top: 20px;
+        }
+
+        /* Carousel */
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            max-width: 1000px;
+            height: 500px;
+            margin: 60px auto 0;
+            perspective: 1000px;
+            overflow: visible;
+        }
+
+        /* Buttons outside track */
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #fff;
+            border: 1px solid #ddd;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 100;
+            color: #111;
+            font-size: 1.2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-btn:hover {
+            background: #111;
+            color: #fff;
+        }
+
+        .prev-btn {
+            left: 10px;
+        }
+
+        .next-btn {
+            right: 10px;
+        }
+
+        .carousel-track {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .glass-card {
+            position: absolute;
+            width: 300px;
+            height: 450px;
+            background: #fff;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            border: 1px solid #eee;
+            transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            pointer-events: none;
+            /* Default hidden state */
+            transform: translateX(0) scale(0.8);
+        }
+
+        .glass-card img {
+            width: 100%;
+            height: 80%;
+            object-fit: cover;
+        }
+
+        .glass-card-info {
+            height: 20%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+
+        /* Active Center Card */
+        .glass-card.active {
+            opacity: 1;
+            pointer-events: auto;
+            z-index: 10;
+            transform: translateX(0) scale(1.1) translateZ(50px);
+            border: 1px solid #111;
+        }
+
+        /* Left Card */
+        .glass-card.prev {
+            opacity: 0.4;
+            z-index: 5;
+            transform: translateX(-350px) scale(0.85) rotateY(15deg);
+            filter: blur(2px);
+            cursor: pointer;
+            pointer-events: auto;
+        }
+
+        /* Right Card */
+        .glass-card.next {
+            opacity: 0.4;
+            z-index: 5;
+            transform: translateX(350px) scale(0.85) rotateY(-15deg);
+            filter: blur(2px);
+            cursor: pointer;
+            pointer-events: auto;
+        }
+
+        @media (max-width: 768px) {
+            .glass-card {
+                width: 260px;
+                height: 380px;
+            }
+
+            .glass-card.prev {
+                transform: translateX(-180px) scale(0.8);
+            }
+
+            .glass-card.next {
+                transform: translateX(180px) scale(0.8);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header dark">
+        <div class="logo"><a href="index.html">TSEKV</a></div>
+        <nav class="nav">
+            <a href="about.html" id="nav-about">ABOUT</a>
+            <a href="Collection.html" id="nav-collection">COLLECTION</a>
+            <a href="contact.html" id="nav-contact">CONTACT</a>
+        </nav>
+        <div class="header-right">
+            <div class="lang-switcher">
+                <button onclick="setLanguage('jp')" class="lang-btn">JP</button>
+                <button onclick="setLanguage('mn')" class="lang-btn">MN</button>
+            </div>
+            <!-- Button is styled by app.css -->
+        </div>
+    </header>
+
+    <section class="weather-section">
+
+        <div class="weather-widget">
+            <div class="location-badge" id="loc-badge">
+                <i class="fas fa-map-marker-alt"></i> <span id="weather-loc-loading">Detecting...</span>
+            </div>
+
+            <div class="weather-header">
+                <div id="weather-icon-display" class="weather-icon"><i class="fas fa-spinner fa-spin"></i></div>
+                <div id="temp-display" class="temp-display">--°C</div>
+            </div>
+
+            <div class="mascot-area">
+                <img id="chibi-image" class="chibi-img" src="" alt="Mascot">
+                <div class="speech-bubble" id="bubble-container" style="display:none">
+                    <span id="cute-msg">...</span>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="recommendation-title" id="rec-title">AUTO STYLIST</h3>
+        <span id="rec-badge-loading" class="collection-badge">Analyzing Style...</span>
+
+        <div class="carousel-container">
+            <button class="nav-btn prev-btn" onclick="moveSlide(-1)"><i class="fas fa-chevron-left"></i></button>
+            <div class="carousel-track" id="carousel-track"></div>
+            <button class="nav-btn next-btn" onclick="moveSlide(1)"><i class="fas fa-chevron-right"></i></button>
+        </div>
+
+    </section>
+
+    <footer class="simple-footer">
+        <p>&copy; 2026 TSEKV. All Rights Reserved.</p>
+    </footer>
+
+    <script src="translations.js"></script>
+    <script>
+        // --- DATA ---
+        // Using local images as requested
+        const chibiImages = {
+            cold: 'cold.png',
+            hot: 'hot.png',
+            mild: 'free.png'
+        };
+
+        const outfitsDB = {
+            cold: [
+                { img: 'https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=600&h=800&fit=crop', title: 'Winter Coat', price: 'Est. ¥82,000' },
+                { img: 'https://images.unsplash.com/photo-1520591799316-6b30425429aa?w=600&h=800&fit=crop', title: 'Cozy Sweater', price: 'Est. ¥35,000' },
+                { img: 'https://images.unsplash.com/photo-1544923246-77307dd654cb?w=600&h=800&fit=crop', title: 'Puffer Jacket', price: 'Est. ¥55,000' }
+            ],
+            hot: [
+                { img: 'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=600&h=800&fit=crop', title: 'Summer Dress', price: 'Est. ¥42,000' },
+                { img: 'https://images.unsplash.com/photo-1502716119720-b23a93e5fe1b?w=600&h=800&fit=crop', title: 'Light Set', price: 'Est. ¥38,000' },
+                { img: 'https://images.unsplash.com/photo-1564584217132-2271feaeb3c5?w=600&h=800&fit=crop', title: 'Cropped Top', price: 'Est. ¥22,000' }
+            ],
+            mild: [
+                { img: 'https://images.unsplash.com/photo-1554568218-0f1715e72254?w=600&h=800&fit=crop', title: 'Casual Look', price: 'Est. ¥30,000' },
+                { img: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&h=800&fit=crop', title: 'Chic Blazer', price: 'Est. ¥62,000' },
+                { img: 'https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=600&h=800&fit=crop', title: 'Midi Dress', price: 'Est. ¥48,000' }
+            ]
+        };
+
+        let currentIndex = 0;
+        let currentClothesList = [];
+
+        // --- WEATHER LOGIC ---
+        function initWeatherSystem() {
+            if (navigator.geolocation) {
+                // Short timeout to fallback quickly if user ignores prompt
+                setTimeout(() => {
+                    if (document.getElementById('temp-display').innerText === '--°C') errorPosition();
+                }, 8000);
+                navigator.geolocation.getCurrentPosition(successPosition, errorPosition);
+            } else {
+                fetchRealWeather(35.6895, 139.6917, "Tokyo (Default)");
+            }
+        }
+
+        function successPosition(position) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            fetchRealWeather(lat, lon, "Local");
+        }
+
+        function errorPosition() {
+            console.log("Geo denied/failed. Using fallback.");
+            fetchRealWeather(35.6895, 139.6917, "Tokyo");
+        }
+
+        async function fetchRealWeather(lat, lon, locationName) {
+            try {
+                const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
+                if (!response.ok) throw new Error("API Failure");
+
+                const data = await response.json();
+                const temp = data.current_weather.temperature;
+
+                updateWeatherUI(temp, locationName);
+
+            } catch (error) {
+                console.error("Weather API Error", error);
+                updateWeatherUI(20, "Offline");
+            }
+        }
+
+        function updateWeatherUI(temp, locName) {
+
+            // Get translations for dynamic content based on current lang
+            const lang = localStorage.getItem('tsekv_lang') || 'jp';
+            const t = translations[lang];
+
+            const iconDisplay = document.getElementById('weather-icon-display');
+            const tempDisplay = document.getElementById('temp-display');
+            const locText = document.getElementById('weather-loc-loading'); // Reusing ID for text
+            const badge = document.getElementById('rec-badge-loading');     // Reusing ID
+            const chibiImg = document.getElementById('chibi-image');
+            const msg = document.getElementById('cute-msg');
+            const bubble = document.getElementById('bubble-container');
+
+            let type = 'mild';
+            if (temp < 15) type = 'cold';
+            else if (temp > 25) type = 'hot';
+
+            // UI Updates
+            let iconClass = type === 'cold' ? 'fas fa-snowflake' : (type === 'hot' ? 'fas fa-sun' : 'fas fa-cloud-sun');
+
+            // Text from translations
+            let styleName = t[`rec-${type}`];
+            let message = t[`msg-${type}`];
+
+            iconDisplay.innerHTML = `<i class="${iconClass}"></i>`;
+            tempDisplay.innerText = `${Math.round(temp)}°C`;
+            locText.innerText = locName === 'Local' || locName === '現在地' ? locName : (lang === 'mn' ? 'Токио' : 'Tokyo');
+            badge.innerText = styleName;
+
+            chibiImg.src = chibiImages[type];
+            chibiImg.style.display = 'block';
+            // Fallback if image fails loading
+            chibiImg.onerror = function () { this.style.display = 'none'; }
+
+            msg.innerText = message;
+            bubble.style.display = 'block';
+
+            // Update Carousel
+            currentClothesList = outfitsDB[type];
+            currentIndex = 0;
+            setupCarousel();
+            updateCarouselPositions(); // Initial position set
+        }
+
+        // --- CAROUSEL ---
+        function setupCarousel() {
+            const track = document.getElementById('carousel-track');
+            track.innerHTML = '';
+            currentClothesList.forEach((item, index) => {
+                const el = document.createElement('div');
+                el.className = 'glass-card';
+                el.dataset.index = index;
+                el.innerHTML = `
+                    <img src="${item.img}" alt="${item.title}">
+                    <div class="glass-card-info">
+                        <h3>${item.title}</h3>
+                        <p>${item.price}</p>
+                    </div>
+                `;
+                track.appendChild(el);
+            });
+            // Force Layout Recalculation
+            setTimeout(updateCarouselPositions, 50);
+        }
+
+        function updateCarouselPositions() {
+            const cards = document.querySelectorAll('.glass-card');
+            const total = currentClothesList.length;
+            if (total === 0) return;
+
+            cards.forEach(card => {
+                const index = parseInt(card.dataset.index);
+                card.className = 'glass-card'; // Reset classes to base
+                card.style.opacity = ''; // Remove inline opacity to let CSS handle it
+                card.style.zIndex = '';
+                card.style.transform = ''; // Clear inline transform so CSS classes work
+
+                const prevIndex = (currentIndex - 1 + total) % total;
+                const nextIndex = (currentIndex + 1) % total;
+
+                // Explicit styles for carousel logic in CSS needed matching classes
+                if (index === currentIndex) {
+                    card.classList.add('active');
+                } else if (index === prevIndex) {
+                    card.classList.add('prev');
+                } else if (index === nextIndex) {
+                    card.classList.add('next');
+                }
+            });
+        }
+
+        function moveSlide(direction) {
+            const len = currentClothesList.length;
+            if (len === 0) return;
+            currentIndex = (currentIndex + direction + len) % len;
+            updateCarouselPositions();
+        }
+
+        initWeatherSystem();
+
+    </script>
+</body>
+
+</html>

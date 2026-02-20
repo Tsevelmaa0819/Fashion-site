@@ -1,0 +1,264 @@
+/* --- ダークモード・コレクションページ用CSS --- */
+
+/* 黒背景のテーマ設定 */
+body.dark-theme {
+    background-color: #0a0a0a; /* ほぼ真っ黒 */
+    color: #f0f0f0;
+}
+
+body.dark-theme .header {
+    background: transparent;
+    color: #fff;
+    mix-blend-mode: normal; /* 黒背景なのでブレンドモード解除 */
+}
+
+/* アートなページヘッダー */
+.page-header-art {
+    height: 40vh; /* 画面の40%の高さ */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(to bottom, #000000, #1a1a1a);
+}
+/* --- 全体のルール（これを一番上に追加すると崩れにくくなります） --- */
+* {
+    box-sizing: border-box; /* 線の太さや余白を含めてサイズ計算する（ズレ防止の基本） */
+}
+
+/* --- ヘッダー（修正版） --- */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px 40px; /* 上下の余白を少し調整 */
+    height: 100px; /* ヘッダーの高さを固定して安定させる */
+    display: flex;
+    justify-content: space-between; /* 両端に配置 */
+    align-items: center; /* 上下の中心に揃える */
+    z-index: 1000;
+    /* 背景色などはページごとの設定（dark-themeなど）に任せる */
+}
+
+/* ロゴ（左側） */
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    width: 150px; /* 幅を確保して、位置を安定させる */
+}
+
+/* ナビゲーションメニュー（修正：絶対配置でど真ん中に固定） */
+.nav {
+    position: absolute; /* 強制的に配置場所を指定 */
+    left: 50%;          /* 画面の左から50%の位置に */
+    transform: translateX(-50%); /* 自身の幅の半分だけ戻す（これで完全な中央になる） */
+    display: flex;
+    gap: 30px; /* メニュー文字同士の間隔 */
+}
+
+.nav a {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 500;
+    /* margin: 0 15px; ← gapを使ったので削除 */
+}
+
+/* 右上の丸いボタン（右側） */
+.btn-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    background: var(--accent-color);
+    border-radius: 50%;
+    font-size: 0.7rem;
+    text-align: center;
+    line-height: 1.2; /* 行間を狭めて文字をまとめる */
+    color: #fff !important;
+    transition: transform 0.3s ease;
+    /* ロゴと同じくらいの幅感を持たせてバランスを取る */
+}
+.page-header-art h1 {
+    font-size: 4rem;
+    letter-spacing: 0.2em;
+    font-family: var(--font-en);
+    text-transform: uppercase;
+    background: -webkit-linear-gradient(45deg, #fff, #888); /* 文字をグラデーションに */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.page-header-art p {
+    color: var(--accent-color);
+    letter-spacing: 0.3em;
+    margin-top: 10px;
+    font-size: 1rem;
+}
+
+/* 全体のラッパー */
+.collection-wrapper {
+    display: flex;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 20px 100px;
+    position: relative;
+}
+
+/* 固定サイドバー */
+.sticky-sidebar {
+    width: 200px;
+    position: sticky;
+    top: 150px; /* スクロールしてもここについてくる */
+    height: fit-content;
+    padding-right: 40px;
+    border-right: 1px solid #333;
+}
+
+.filter-label {
+    display: block;
+    font-family: var(--font-en);
+    margin-bottom: 20px;
+    color: #555;
+    font-size: 0.8rem;
+}
+
+.filter-box ul {
+    list-style: none;
+    padding: 0;
+}
+
+.filter-box li {
+    margin-bottom: 15px;
+}
+
+.filter-box a {
+    font-size: 1.1rem;
+    color: #888;
+    position: relative;
+    transition: 0.3s;
+}
+
+.filter-box a.active,
+.filter-box a:hover {
+    color: #fff;
+    padding-left: 10px;
+}
+
+.filter-box a.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    background: var(--accent-color);
+    border-radius: 50%;
+}
+
+/* --- メイソンリー（不規則）グリッド --- */
+.masonry-grid {
+    flex: 1;
+    display: grid;
+    /* 縦横のサイズを細かく設定して、パズルのように組む */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-auto-rows: 300px; 
+    gap: 20px;
+    padding-left: 40px;
+}
+
+/* カードの共通設定 */
+.art-card {
+    position: relative;
+    overflow: hidden;
+    background: #000;
+    cursor: pointer;
+}
+
+.art-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 画像をつぶさない */
+    transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    opacity: 0.8;
+}
+
+/* サイズ違いのカード設定 */
+.art-card.tall {
+    grid-row: span 2; /* 縦に2マス分使う */
+}
+
+.art-card.wide {
+    grid-column: span 2; /* 横に2マス分使う */
+}
+
+/* ホバー時のエフェクト */
+.art-card:hover img {
+    transform: scale(1.1);
+    opacity: 0.4; /* 画像を暗くする */
+}
+
+/* 文字を重ねる（普段は隠す） */
+.overlay {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    z-index: 2;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.4s ease;
+}
+
+.art-card:hover .overlay {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.overlay h3 {
+    font-family: var(--font-en);
+    font-size: 1.5rem;
+    color: #fff;
+    margin-bottom: 5px;
+}
+
+.overlay p {
+    color: var(--accent-color);
+    font-family: var(--font-jp-serif);
+}
+
+/* スマホ対応 */
+@media (max-width: 768px) {
+    .collection-wrapper {
+        flex-direction: column;
+    }
+    .sticky-sidebar {
+        width: 100%;
+        position: static;
+        border-right: none;
+        border-bottom: 1px solid #333;
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+    }
+    .filter-box ul {
+        display: flex;
+        gap: 20px;
+        overflow-x: auto; /* 横スクロール可能に */
+    }
+    .masonry-grid {
+        padding-left: 0;
+        grid-template-columns: 1fr; /* スマホは1列 */
+        grid-auto-rows: auto;
+    }
+    .art-card.tall, .art-card.wide {
+        grid-row: auto;
+        grid-column: auto;
+    }
+    .art-card {
+        height: 400px; /* スマホでの高さ固定 */
+    }
+}

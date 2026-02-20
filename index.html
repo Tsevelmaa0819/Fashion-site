@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TSEKV | Official</title>
+    <link rel="stylesheet" href="app.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Noto+Sans+JP:wght@300;500&family=Zen+Old+Mincho:wght@400;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="logo"><a href="index.html">TSEKV</a></div>
+        <nav class="nav">
+            <a href="about.html" id="nav-about">ABOUT</a>
+            <a href="Collection.html" id="nav-collection">COLLECTION</a>
+            <a href="contact.html" id="nav-contact">CONTACT</a>
+        </nav>
+        <div class="header-right">
+            <div class="lang-switcher">
+                <button onclick="setLanguage('jp')" class="lang-btn">JP</button>
+                <button onclick="setLanguage('mn')" class="lang-btn">MN</button>
+            </div>
+            <a href="finesse.html" class="btn-circle" id="finesse-btn">Finesse<br>Stylist</a>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-bg" id="hero-bg"></div>
+        <div class="hero-content fade-in-up">
+            <h1 id="hero-title">遊牧の魂。<br>都会の鼓動。</h1>
+            <p id="hero-desc">モンゴルの伝統と現代の感性が織りなす、<br>唯一無二のコレクション。</p>
+        </div>
+    </section>
+
+    <!-- Concept Section -->
+    <section class="section concept js-scroll">
+        <div class="container">
+            <div class="text-block">
+                <h2 id="concept-title">CONCEPT</h2>
+                <p id="concept-text">
+                    広大な草原の自由さと、東京の洗練されたミニマリズム。<br>
+                    TSEKVは、異なる二つの世界を繋ぐ架け橋です。<br><br>
+                    流行を追うのではなく、自身の物語を纏う。<br>
+                    それが私たちの哲学です。
+                </p>
+                <div class="center-btn" style="text-align: left; margin-top: 30px;">
+                    <a href="about.html" class="btn-arrow" id="btn-read-more">READ OUR STORY</a>
+                </div>
+            </div>
+            <div class="image-block">
+                <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&auto=format&fit=crop"
+                    alt="Concept Image">
+            </div>
+        </div>
+    </section>
+
+    <!-- Collection Preview -->
+    <section class="section collection js-scroll">
+        <div class="container">
+            <h2 class="section-title" id="section-latest">LATEST FINDS</h2>
+            <div class="grid">
+
+                <div class="card" onclick="location.href='Collection.html'">
+                    <div class="card-img">
+                        <img src="https://images.unsplash.com/photo-1544923246-77307dd654cb?auto=format&fit=crop&w=800&q=80"
+                            alt="Collection 1">
+                    </div>
+                    <div class="card-info">
+                        <h3 id="card-1-title">WINTER 2026</h3>
+                        <p id="card-1-desc">暖かさとスタイルの融合</p>
+                    </div>
+                </div>
+
+                <div class="card" onclick="location.href='Collection.html'">
+                    <div class="card-img">
+                        <img src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=800&q=80"
+                            alt="Collection 2">
+                    </div>
+                    <div class="card-info">
+                        <h3 id="card-2-title">CASHMERE EDIT</h3>
+                        <p id="card-2-desc">日常を彩る上質なベーシック</p>
+                    </div>
+                </div>
+
+                <div class="card" onclick="location.href='Collection.html'">
+                    <div class="card-img">
+                        <img src="https://images.unsplash.com/photo-1581044777550-4cfa60707c03?auto=format&fit=crop&w=800&q=80"
+                            alt="Collection 3">
+                    </div>
+                    <div class="card-info">
+                        <h3 id="card-3-title">URBAN ESSENTIALS</h3>
+                        <p id="card-3-desc">個性を引き立てるディテール</p>
+                    </div>
+                </div>
+
+            </div>
+            <div class="center-btn">
+                <a href="Collection.html" class="btn-main" id="btn-view-collection">VIEW ALL COLLECTION</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Finesse Teaser -->
+    <section class="section finesse-teaser js-scroll" style="background-color: #eee; text-align: center;">
+        <div class="container">
+            <h2 class="section-title" style="margin-bottom: 20px;" id="teaser-title">Finesse Stylist</h2>
+            <p style="margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto;" id="teaser-desc">
+                今日の天気や気分に合わせて、あなたにぴったりのスタイルを提案します。<br>
+                AIを活用したパーソナルスタイリング体験を。
+            </p>
+            <a href="finesse.html" class="btn-main" id="btn-launch">LAUNCH STYLIST</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-logo">TSEKV</div>
+        <div class="socials">
+            <!-- Socials don't need translation for now -->
+            <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+            <a href="#"><i class="fab fa-tiktok"></i> TikTok</a>
+        </div>
+        <p class="copyright">&copy; 2026 TSEKV. All Rights Reserved.</p>
+    </footer>
+
+    <script src="translations.js"></script>
+    <script>
+        // Hero Background Slider (Kept intact)
+        const images = [
+            'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=1600&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1445205170230-053b83016050?w=1600&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1600&auto=format&fit=crop'
+        ];
+        let currentImg = 0;
+        const heroBg = document.getElementById('hero-bg');
+
+        function changeHero() {
+            heroBg.style.backgroundImage = `url('${images[currentImg]}')`;
+            currentImg = (currentImg + 1) % images.length;
+        }
+        changeHero();
+
+        // Scroll Animations
+        gsap.registerPlugin(ScrollTrigger);
+        gsap.utils.toArray('.js-scroll').forEach(section => {
+            gsap.to(section, {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                scrollTrigger: {
+                    trigger: section,
+                    start: "top 80%",
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
